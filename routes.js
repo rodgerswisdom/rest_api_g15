@@ -43,12 +43,16 @@ router.put('/items/:id', async (req, res) => {
     }
 });
 
-router.delete('items/:id', async (req, res) => {
+router.delete('/items/:id', async (req, res) => {
     try{
         const deleteBook = await book.findByIdAndDelete(req.params.id);
-        res.status(200).send(`Book Deleted: ${deleteBook}`);
+        if(!deleteBook){
+            return res.status(404).send("Book not found");
+        }
+        res.json(`Book Deleted: ${deleteBook}`);
+
     } catch(error){
-        res.status(500).send(`Error deleting book ${error}`);
+        res.status(500).json(`Error deleting book ${error}`);
     }
 });
     
